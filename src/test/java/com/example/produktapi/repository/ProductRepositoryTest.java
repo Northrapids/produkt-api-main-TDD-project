@@ -153,58 +153,7 @@ class ProductRepositoryTest {
     }
 
 
-    /*
-    @Test
-    void whenFindingAllCategories_thenReturnListOfCategories() {
-        // given
 
-        String category1 = "Elektronik";
-        String category2 = "Smycken";
-        String category3 = "Kläder";
-        String category4 = "Smink";
-
-
-
-        Product product1 = new Product(
-                "En dator",
-                25000.0,
-                category1,
-                "bra o ha",
-                "urlTillBild");
-
-        Product product2 = new Product(
-                "Ett halsband",
-                4000.0,
-                category2,
-                "fint o ha",
-                "urlTillBild");
-
-        Product product3 = new Product(
-                "En T-shirt",
-                199.0,
-                category3,
-                "bra o ha",
-                "urlTillBild");
-
-        Product product4 = new Product(
-                "Ett läppstift",
-                75.0,
-                category4,
-                "fint o ha",
-                "urlTillBild");
-
-        underTest.saveAll(List.of(product1, product2, product3, product4));
-
-        // when
-        List<String> categories = underTest.findAllCategories();
-
-        // then
-        assertAll(
-                () -> assertEquals(4, categories.size())
-                //() -> assertTrue(categories.containsAll(List.of("Elektronik", "Smycken", "Kläder", "Smink")))
-        );
-    }
-    */
 
     /*
 
@@ -225,8 +174,12 @@ class ProductRepositoryTest {
     }
 
      */
+    /*
 
     @Test
     void findAllCategories() {
+        klar
     }
+
+     */
 }
