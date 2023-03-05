@@ -51,7 +51,7 @@ public class SeleniumTest {
 
 
     // G - krav:
-    // a. Kontrollera att webbplatsens titel stämmer. <- KLAR
+    // a. Kontrollera att webbplatsens titel stämmer. <-- KLAR
     @Test
     public void checkTitleWithChromeJava22() {
         // Hämta in en webdriver som ska användas

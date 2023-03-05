@@ -263,13 +263,13 @@ class ProductServiceTest {
         verifyNoMoreInteractions(repository);
     }
 
-    /*
+
     @Test
-    void testingGithubActions() {
-        Assertions.assertEquals(5,5);
+    void testGithubActions() {
+        assertEquals(3,5);
     }
 
-     */
+
 
 /*
     @Test
