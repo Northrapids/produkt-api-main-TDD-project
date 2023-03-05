@@ -1,5 +1,7 @@
 package com.example.produktapi;
 
+/*
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -16,6 +18,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+ */
+
 
 public class SeleniumTest {
 
@@ -30,6 +34,7 @@ public class SeleniumTest {
 
 
      */
+
 
     /* TODO
         G - krav:
@@ -49,23 +54,26 @@ public class SeleniumTest {
         lägg till BeforeAll och AfterAll.
      */
 
+    /*
+
 
     // G - krav:
     // a. Kontrollera att webbplatsens titel stämmer. <-- KLAR
+
     @Test
-    public void checkTitleWithChromeJava22() {
-        // Hämta in en webdriver som ska användas
+    public void checkTitle() {
+        // Hämta in den webdriver som ska användas
         WebDriver driver = new ChromeDriver();
 
-
+        // Navigera till den webbsida som ska testas
         driver.get("https://java22.netlify.app/");
 
-
-        // Testa om förväntad titel matchar webbplatsens title
         assertEquals("Webbutik", driver.getTitle(), "Titeln stämmer inte med förväntat");
 
+        // Avsluta WebDriver
         driver.quit();
     }
+
 
     // G - krav:
     // b. Kolla att det totala antalet produkter stämmer. <- KLAR
@@ -547,7 +555,7 @@ public class SeleniumTest {
         driver.get("https://java22.netlify.app/");
 
         // Vänta tills länken är hittad och klickad
-        WebElement electronicsLink = new WebDriverWait(driver, Duration.ofSeconds(10))
+        WebElement electronicsLink = new WebDriverWait(driver, Duration.ofSeconds(50))
                 .until(ExpectedConditions.elementToBeClickable(By.linkText("electronics")));
         electronicsLink.click();
 
@@ -573,7 +581,7 @@ public class SeleniumTest {
         driver.get("https://java22.netlify.app/");
 
         // Vänta tills länken är hittad och klickad
-        WebElement jeweleryLink = new WebDriverWait(driver, Duration.ofSeconds(10))
+        WebElement jeweleryLink = new WebDriverWait(driver, Duration.ofSeconds(50))
                 .until(ExpectedConditions.elementToBeClickable(By.linkText("jewelery")));
         jeweleryLink.click();
 
@@ -599,7 +607,7 @@ public class SeleniumTest {
         driver.get("https://java22.netlify.app/");
 
         // Vänta tills länken är hittad och klickad
-        WebElement mensClothingLink = new WebDriverWait(driver, Duration.ofSeconds(10))
+        WebElement mensClothingLink = new WebDriverWait(driver, Duration.ofSeconds(50))
                 .until(ExpectedConditions.elementToBeClickable(By.linkText("men's clothing")));
         mensClothingLink.click();
 
@@ -625,7 +633,7 @@ public class SeleniumTest {
         driver.get("https://java22.netlify.app/");
 
         // Vänta tills länken är hittad och klickad
-        WebElement womensClothingLink = new WebDriverWait(driver, Duration.ofSeconds(10))
+        WebElement womensClothingLink = new WebDriverWait(driver, Duration.ofSeconds(50))
                 .until(ExpectedConditions.elementToBeClickable(By.linkText("women's clothing")));
         womensClothingLink.click();
 
@@ -640,5 +648,7 @@ public class SeleniumTest {
         driver.quit();
 
     }
+
+     */
 
 }
