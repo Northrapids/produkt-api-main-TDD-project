@@ -51,15 +51,16 @@ public class SeleniumTest {
         f. Gör produktkategorierna klickbara och testa att rätt antal produkter
            visas vid klick på respektive kategori. <-- KLAR
         -------------------------------------------------------------
-        lägg till BeforeAll och AfterAll.
+        Om det finns tid över:
+        Lägg till BeforeAll och AfterAll.
+        Slå samman upprepande kod stycken tex. kontroll av priserna.
      */
+
 
     /*
 
-
     // G - krav:
     // a. Kontrollera att webbplatsens titel stämmer. <-- KLAR
-
     @Test
     public void checkTitle() {
         // Hämta in den webdriver som ska användas
@@ -68,6 +69,7 @@ public class SeleniumTest {
         // Navigera till den webbsida som ska testas
         driver.get("https://java22.netlify.app/");
 
+        // Kontrollera att titeln matchar det förväntade
         assertEquals("Webbutik", driver.getTitle(), "Titeln stämmer inte med förväntat");
 
         // Avsluta WebDriver
@@ -76,7 +78,7 @@ public class SeleniumTest {
 
 
     // G - krav:
-    // b. Kolla att det totala antalet produkter stämmer. <- KLAR
+    // b. Kolla att det totala antalet produkter stämmer. <-- KLAR
     @Test
     public void numberOfProductsShouldBeTwenty() {
         // Hämta in den webdriver som ska användas
@@ -89,16 +91,18 @@ public class SeleniumTest {
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.className("productItem")));
 
+        // Hämta alla produkter baserat
         List<WebElement> products = driver.findElements(By.className("productItem"));
 
+        // kontrollera att antalet produkter matchar det förväntade antalet
         assertEquals(20, products.size(), "Antalet produkter stämmer inte");
 
+        // Avsluta WebDriver
         driver.quit();
     }
 
-
     // G - krav:
-    // c. Kontrollera att priset blir rätt på minst 3 produkter <- KLAR
+    // c. Kontrollera att priset blir rätt på minst 3 produkter <-- KLAR
     // checkPrice 1/3
     @Test
     public void checkPriceOfFjallravenBackpack() {
@@ -108,20 +112,24 @@ public class SeleniumTest {
         // Navigera till den webbsida som ska testas
         driver.get("https://java22.netlify.app/");
 
+        // Vänta i 10 sekunder så att sidan hinner ladda in elementen jag vill få ut och hämta texten som innehåller priset
         WebElement cardTextContainingPrice = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//p[contains(text(), 'Fin väska me plats för dator')]"
                 )));
 
+        // ta ut texten från elementet
         String priceToText = cardTextContainingPrice.getText();
+
+        // ta bort oönskad text med regex
         String price = priceToText.replaceAll("[^\\d.]", "");
 
+        // kontrollera att priset matchar det förväntade
         assertEquals("109.95", price, "Priset stämmer inte!");
 
+        // Avsluta WebDriver
         driver.quit();
     }
-
-
 
     // checkPrice 2/3
     @Test
@@ -132,16 +140,22 @@ public class SeleniumTest {
         // Navigera till den webbsida som ska testas
         driver.get("https://java22.netlify.app/");
 
+        // Vänta i 10 sekunder så att sidan hinner ladda in elementen jag vill få ut och hämta texten som innehåller priset
         WebElement cardTextContainingPrice = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//p[contains(text(), 'Den här kan vara bra att ha också.')]"
                 )));
 
+        // ta ut texten från elementet
         String priceToText = cardTextContainingPrice.getText();
+
+        // ta bort oönskad text med regex
         String price = priceToText.replaceAll("[^\\d]", ""); // när texten man vill ta bort avslutas med en punk, måste man ta bort punkten efter d i regex
 
+        // kontrollera att priset matchar det förväntade
         assertEquals("109", price, "Priset stämmer inte!");
 
+        // Avsluta WebDriver
         driver.quit();
     }
 
@@ -154,21 +168,27 @@ public class SeleniumTest {
         // Navigera till den webbsida som ska testas
         driver.get("https://java22.netlify.app/");
 
+        // Vänta i 10 sekunder så att sidan hinner ladda in elementen jag vill få ut och hämta texten som innehåller priset
         WebElement cardTextContainingPrice = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//p[contains(text(), 'Något med en uggla, och i guld och lite dubbel stål')]"
                 )));
 
+        // ta ut texten från elementet
         String priceToText = cardTextContainingPrice.getText();
+
+        // ta bort oönskad text med regex
         String price = priceToText.replaceAll("[^\\d.]", ""); // när texten man vill ta bort avslutas med en punk, måste man ta bort punkten efter d i regex
 
+        // kontrollera att priset matchar det förväntade
         assertEquals("10.99", price, "Priset stämmer inte!");
 
+        // Avsluta WebDriver
         driver.quit();
     }
 
     //VG - krav:
-    // a. Skriv ut alla kategorier och kolla att de har rätt namn.
+    // a. Skriv ut alla kategorier och kolla att de har rätt namn. <-- KLAR
     // checkIfCategoryHaveCorrectName 1/4
     @Test
     public void checkIfCategoryElectronicsHaveCorrectName() {
@@ -178,13 +198,16 @@ public class SeleniumTest {
         // Navigera till den webbsida som ska testas
         driver.get("https://java22.netlify.app/");
 
+        // Vänta i 10 sekunder så att sidan hinner ladda in elementen jag vill få ut
         WebElement electronics = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//*[@id='root']/div/div[2]/a"
                 )));
 
+        // Kontrollera att namnet matchar det förväntade
         assertEquals("electronics", electronics.getText(), "Kategorin stämmer inte!");
 
+        // Avsluta WebDriver
         driver.quit();
 
     }
@@ -198,13 +221,16 @@ public class SeleniumTest {
         // Navigera till den webbsida som ska testas
         driver.get("https://java22.netlify.app/");
 
+        // Vänta i 10 sekunder så att sidan hinner ladda in elementen jag vill få ut
         WebElement jewelery = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//*[@id=\"root\"]/div/div[3]/a"
                 )));
 
+        // Kontrollera att namnet matchar det förväntade
         assertEquals("jewelery", jewelery.getText(), "Kategorin stämmer inte!");
 
+        // Avsluta WebDriver
         driver.quit();
 
     }
@@ -218,13 +244,16 @@ public class SeleniumTest {
         // Navigera till den webbsida som ska testas
         driver.get("https://java22.netlify.app/");
 
+        // Vänta i 10 sekunder så att sidan hinner ladda in elementen jag vill få ut
         WebElement mensClothing = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//*[@id=\"root\"]/div/div[4]/a"
                 )));
 
+        // Kontrollera att namnet matchar det förväntade
         assertEquals("men's clothing", mensClothing.getText(), "Kategorin stämmer inte!");
 
+        // Avsluta WebDriver
         driver.quit();
 
     }
@@ -238,13 +267,16 @@ public class SeleniumTest {
         // Navigera till den webbsida som ska testas
         driver.get("https://java22.netlify.app/");
 
+        // Kontrollera att namnet matchar det förväntade
         WebElement womensClothing = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//*[@id=\"root\"]/div/div[5]/a"
                 )));
 
+        // Kontrollera att namnet matchar det förväntade
         assertEquals("women's clothing", womensClothing.getText(), "Kategorin stämmer inte!");
 
+        // Avsluta WebDriver
         driver.quit();
 
     }
@@ -258,19 +290,22 @@ public class SeleniumTest {
         // Navigera till den webbsida som ska testas
         driver.get("https://java22.netlify.app/");
 
+        // Kontrollera att namnet matchar det förväntade
         WebElement startsida = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//*[@id=\"root\"]/div/a"
                 )));
 
+        // Kontrollera att namnet matchar det förväntade
         assertEquals("Startsida", startsida.getText(), "Kategorin stämmer inte!");
 
+        // Avsluta WebDriver
         driver.quit();
 
     }
 
     // VG - krav:
-    // b. Kontrollera priset på ytterligare 3 produkter. <- KLAR
+    // b. Kontrollera priset på ytterligare 3 produkter. <-- KLAR
     // checkPriceVG 1/3
     @Test
     public void checkPriceOfMensSlimFitTShirt() {
@@ -280,16 +315,22 @@ public class SeleniumTest {
         // Navigera till den webbsida som ska testas
         driver.get("https://java22.netlify.app/");
 
+        // Vänta i 10 sekunder så att sidan hinner ladda in elementen jag vill få ut och hämta texten som innehåller priset
         WebElement cardTextContainingPrice = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//p[contains(text(), 'Vilken härlig t-shirt, slim fit o casual i ett!')]"
                 )));
 
+        // ta ut texten från elementet
         String priceToText = cardTextContainingPrice.getText();
+
+        // ta bort oönskad text med regex
         String price = priceToText.replaceAll("[^\\d.]", ""); // när texten man vill ta bort avslutas med en punk, måste man ta bort punkten efter d i regex
 
+        // kontrollera att priset matchar det förväntade
         assertEquals("22.3", price, "Priset stämmer inte!");
 
+        // Avsluta WebDriver
         driver.quit();
     }
 
@@ -302,16 +343,22 @@ public class SeleniumTest {
         // Navigera till den webbsida som ska testas
         driver.get("https://java22.netlify.app/");
 
+        // Vänta i 10 sekunder så att sidan hinner ladda in elementen jag vill få ut och hämta texten som innehåller priset
         WebElement cardTextContainingPrice = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//p[contains(text(), 'En lite böjd skär Men den funkar ändå!')]"
                 )));
 
+        // ta ut texten från elementet
         String priceToText = cardTextContainingPrice.getText();
+
+        // ta bort oönskad text med regex
         String price = priceToText.replaceAll("[^\\d.]", ""); // när texten man vill ta bort avslutas med en punk, måste man ta bort punkten efter d i regex
 
+        // kontrollera att priset matchar det förväntade
         assertEquals("999.99", price, "Priset stämmer inte!");
 
+        // Avsluta WebDriver
         driver.quit();
     }
 
@@ -324,21 +371,27 @@ public class SeleniumTest {
         // Navigera till den webbsida som ska testas
         driver.get("https://java22.netlify.app/");
 
+        // Vänta i 10 sekunder så att sidan hinner ladda in elementen jag vill få ut och hämta texten som innehåller priset
         WebElement cardTextContainingPrice = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//p[contains(text(), 'Denna blir man glad av.')]"
                 )));
 
+        // ta ut texten från elementet
         String priceToText = cardTextContainingPrice.getText();
+
+        // ta bort oönskad text med regex
         String price = priceToText.replaceAll("[^\\d]", ""); // när texten man vill ta bort avslutas med en punk, måste man ta bort punkten efter d i regex
 
+        // kontrollera att priset matchar det förväntade
         assertEquals("168", price, "Priset stämmer inte!");
 
+        // Avsluta WebDriver
         driver.quit();
     }
 
     // VG - krav:
-    // c. Kontrollera att bilderna skrivs ut/visas till minst 3 produkter.
+    // c. Kontrollera att bilderna skrivs ut/visas till minst 3 produkter. <-- KLAR
     // checkIfImageIsPrinted 1/3
     @Test
     public void checkIfImageOfFjallravenIsPrinted() {
@@ -348,7 +401,7 @@ public class SeleniumTest {
         // Navigera till den webbsida som ska testa
         driver.get("https://java22.netlify.app/");
 
-        // hitta bild-element med hjälp av xpath
+        // Vänta i 10 sekunder så att sidan hinner ladda in bild elementen jag vill få ut via xpath
         WebElement imageElement = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//*[@id='productsContainer']/div/div[1]/div/img"
@@ -371,7 +424,7 @@ public class SeleniumTest {
         // Navigera till den webbsida som ska testa
         driver.get("https://java22.netlify.app/");
 
-        // hitta bild-element med hjälp av xpath
+        // Vänta i 10 sekunder så att sidan hinner ladda in bild elementen jag vill få ut via xpath
         WebElement imageElement = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//*[@id=\"root\"]/div/div[6]/div/div/div/div[4]/div/img" // <-- från jewelery kategorin. Från Startsidan --> //*[@id="productsContainer"]/div/div[8]/div/img
@@ -394,7 +447,7 @@ public class SeleniumTest {
         // Navigera till den webbsida som ska testa
         driver.get("https://java22.netlify.app/");
 
-        // hitta bild-element med hjälp av xpath
+        // Vänta i 10 sekunder så att sidan hinner ladda in bild elementen jag vill få ut via xpath
         WebElement imageElement = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//*[@id=\"root\"]/div/div[6]/div/div/div/div[6]/div/img" // <-- från jewelery kategorin. Från Startsidan --> //*[@id="productsContainer"]/div/div[20]/div/img
@@ -421,15 +474,19 @@ public class SeleniumTest {
         // Navigera till den webbsida som ska testa
         driver.get("https://java22.netlify.app/");
 
+        // Vänta i 10 sekunder så att sidan hinner ladda in elementen jag vill få ut via xpath
         WebElement imageElement = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//*[@id=\"productsContainer\"]/div/div[1]/div/img"
                 )));
 
-
+        // Hämta värdet på src attributet
         String srcAttribute = imageElement.getAttribute("src");
+
+        // Förväntade src attributet
         String expectedSrcAttribute = "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg";
 
+        // Kontrollera att src attributet matchar det förväntade
         assertEquals(expectedSrcAttribute, srcAttribute);
 
         // stäng webbläsaren
@@ -447,14 +504,19 @@ public class SeleniumTest {
         // Navigera till den webbsida som ska testa
         driver.get("https://java22.netlify.app/");
 
+        // Vänta i 10 sekunder så att sidan hinner ladda in elementen jag vill få ut via xpath
         WebElement imageElement = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//*[@id=\"productsContainer\"]/div/div[8]/div/img"
                 )));
 
+        // Hämta värdet på src attributet
         String srcAttribute = imageElement.getAttribute("src");
+
+        // Förväntade src attributet
         String expectedSrcAttribute = "https://fakestoreapi.com/img/51UDEzMJVpL._AC_UL640_QL65_ML3_.jpg";
 
+        // Kontrollera att src attributet matchar det förväntade
         assertEquals(expectedSrcAttribute, srcAttribute);
 
         // stäng webbläsaren
@@ -477,9 +539,13 @@ public class SeleniumTest {
                         "//*[@id=\"productsContainer\"]/div/div[20]/div/img"
                 )));
 
+        // Hämta värdet på src attributet
         String srcAttribute = imageElement.getAttribute("src");
+
+        // Förväntade src attributet
         String expectedSrcAttribute = "https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg";
 
+        // Kontrollera att src attributet matchar det förväntade
         assertEquals(expectedSrcAttribute, srcAttribute);
 
         // stäng webbläsaren
@@ -501,10 +567,10 @@ public class SeleniumTest {
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.className("card-title")));
 
-        // Hitta alla produkters namn baserat på html klass attribut och lagra dom i en lista
+        // Hitta alla produkters title baserat på html klass attribut och lagra dom i en lista
         List<WebElement> productTitles = driver.findElements(By.className("card-title"));
 
-        // Array som definierar alla förväntade namn på produkterna
+        // Array som definierar alla förväntade titlar på produkterna
         String[] expectedTitles = {
                 "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
                 "Mens Casual Premium Slim Fit T-Shirts",
@@ -652,3 +718,5 @@ public class SeleniumTest {
      */
 
 }
+
+
