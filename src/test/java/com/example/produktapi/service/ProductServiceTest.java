@@ -29,7 +29,7 @@ class ProductServiceTest {
     @Mock
     private ProductRepository repository;
 
-    // Skapar en instans av klassen och injetar det som är annoterat med @Mock (ProductService)
+    // Skapar en instans av klassen och injectar det som är annoterat med @Mock (ProductService)
     @InjectMocks
     private ProductService underTest;
 
@@ -130,7 +130,7 @@ class ProductServiceTest {
 
     // Testar om addProduct() kastar en BadRequestException om man försöker lägga till en produkt som redan existerar
     @Test
-    void whenAddingProductWithDuplicateTitle_thenThrowError() {
+    void whenAddProductWithDuplicateTitle_thenThrowError() {
         //given
         String title = "vår test-title";
         Product product = new Product(title,34.0,"","","");
@@ -220,6 +220,8 @@ class ProductServiceTest {
     }
 
     // deleteProduct() -------------------------------------------------------------------------------------------
+
+    // Testar att radera produkt med giltigt id
     @Test
     void whenDeleteProductWithValidId_thenFindByIDAndDeleteByIdAreCalled() {
 
@@ -234,9 +236,11 @@ class ProductServiceTest {
         );
         product.setId(id);
 
+        // använder mock för att returnera produkt med rätt id
         when(repository.findById(id)).thenReturn(Optional.of(product));
 
         // when
+        // radera produkten med id
         underTest.deleteProduct(id);
 
         // then
@@ -244,18 +248,23 @@ class ProductServiceTest {
         verify(repository, times(1)).deleteById(id);
         verifyNoMoreInteractions(repository);
     }
+
+    // Testar att ett felmeddelande kastas när man försöker radera produkt ogiltigt id
     @Test
     void whenDeleteProductWithInvalidId_thenThrowException() {
         // given
         Integer id = 1;
 
+        //
         when(repository.findById(id)).thenReturn(Optional.empty());
 
         // when, then
+        // kallar på deleteProdukt() och kastar att felmeddelande
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             underTest.deleteProduct(id);
         });
 
+        // Kontrollerar att felmeddelandet matchar det förväntade
         assertEquals("Produkt med id " + id + " hittades inte", exception.getMessage());
         verify(repository, times(1)).findById(id);
         verifyNoMoreInteractions(repository);

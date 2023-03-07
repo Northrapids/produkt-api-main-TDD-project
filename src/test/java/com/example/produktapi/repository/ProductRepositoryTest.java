@@ -42,13 +42,6 @@ class ProductRepositoryTest {
         Optional<Product> optionalProduct = underTest.findByTitle("En dator");
 
         // then
-
-        // ett sätt att skriva 3 tester
-        // assertTrue(optionalProduct.isPresent());
-        //assertFalse(optionalProduct.isEmpty());
-        //assertEquals(title, optionalProduct.get().getTitle());
-
-        // // ett annat sätt att skriva 3 tester
         Assertions.assertAll(
                 () -> assertTrue(optionalProduct.isPresent()),
                 () -> assertFalse(optionalProduct.isEmpty()),
@@ -151,35 +144,4 @@ class ProductRepositoryTest {
         // then
         assertTrue(categories.isEmpty());
     }
-
-
-
-
-    /*
-
-
-
-    /*
-    @Test
-    void findByCategory() {
-
-    }
-
-     */
-
-    /*
-    klar
-    @Test
-    void findByTitle() {
-    }
-
-     */
-    /*
-
-    @Test
-    void findAllCategories() {
-        klar
-    }
-
-     */
 }
