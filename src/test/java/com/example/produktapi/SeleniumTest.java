@@ -91,7 +91,7 @@ public class SeleniumTest {
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.className("productItem")));
 
-        // Hämta alla produkter baserat
+        // Hämta alla produkter baserat på html klass namn
         List<WebElement> products = driver.findElements(By.className("productItem"));
 
         // kontrollera att antalet produkter matchar det förväntade antalet

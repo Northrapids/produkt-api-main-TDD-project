@@ -22,24 +22,24 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(MockitoExtension.class) // Sätter upp miljön för Mockning
 class ProductServiceTest {
 
-    // Mock the ProductRepository
+    // Annoterar det som skall mockas, en "falsk" ProductRepository
     @Mock
     private ProductRepository repository;
 
-    // Inject the ProductRepository mock into the ProductService
+    // Skapar en instans av klassen och injetar det som är annoterat med @Mock (ProductService)
     @InjectMocks
     private ProductService underTest;
 
-    // Create a captor to capture the Product object that is passed to the save() method of the repository
+    // Captor gör det möjligt att testa om produkten som skickas till save() metoden i productRepository matchar det i testet
     @Captor
     ArgumentCaptor<Product> productCaptor;
 
     // getAllProducts() -----------------------------------------------------------------------------------
 
-    // Test that the getAllProducts() method calls the findAll() method of the repository exactly once
+    // Testar om getAllProducts() kallar på findAll() i repository en gång
     @Test
     void whenGetAllProducts_thenExactlyOneInteractionWithRepositoryMethodFindAll() {
         // when
@@ -51,9 +51,9 @@ class ProductServiceTest {
 
     // getAllCategories() --------------------------------------------------------------------------------------------
 
-    // Test that the getAllCategories() method calls the findAllCategories() method of the repository exactly once
+    // Testar att getAllCategories() kallar på findAllCategories() i repository en gång
     @Test
-    void whenGetAllCategories_thenExactlyOneInteractionWithRepositoryMethodGetByCategory() {
+    void whenGetAllCategories_thenExactlyOneInteractionWithRepositoryMethodFindAllCategories() {
         // when
         underTest.getAllCategories();
         // then
@@ -65,7 +65,7 @@ class ProductServiceTest {
 
     // getProductsByCategory() -----------------------------------------------------------------
 
-    // Test that the getProductsByCategory() method calls the findByCategory() method of the repository with the correct argument
+    // Testar om getProductsByCategory() kallar på findByCategory() i repository me rätt argument
     @Test
     void whenGetProductsByCategoryWithValidCategory_thenFindByCategoryIsCalledWithCorrectArgument() {
         // given
@@ -81,6 +81,7 @@ class ProductServiceTest {
 
     // getProductById() ---------------------------------------------------------------------------------------------
 
+    // Testar om getProductById() hämtar ut en produkt med angivet id
     @Test
     void whenGetProductsByIdWithExistingId_thenReturnProduct() {
         // given
@@ -98,10 +99,11 @@ class ProductServiceTest {
         verifyNoMoreInteractions(repository);
     }
 
+    // Testar om getProductById() kastar ett exception om ett angivet id inte existerar
     @Test
     void whenGetProductsByIdWithNonExistingId_thenThrowException() {
         // given
-        Integer id = 13;
+        Integer id = 1;
         when(repository.findById(id)).thenReturn(Optional.empty());
 
         // when, then
@@ -112,8 +114,9 @@ class ProductServiceTest {
 
     // addProduct() -------------------------------------------------------------------------------------------------
 
+    // Testar om addProduct() kan lägga till en och sparar produkt i repository
     @Test
-    void whenAddingAProduct_thenSaveMethodShouldBeCalled() {
+    void whenAddProduct_thenSaveMethodShouldBeCalled() {
         // given
         Product product = new Product("Dator",4000.0,"","","");
 
@@ -125,26 +128,30 @@ class ProductServiceTest {
         assertEquals(product, productCaptor.getValue());
     }
 
-    // Test that the addProduct() method throws a BadRequestException when given a product with a duplicate title
+    // Testar om addProduct() kastar en BadRequestException om man försöker lägga till en produkt som redan existerar
     @Test
     void whenAddingProductWithDuplicateTitle_thenThrowError() {
         //given
         String title = "vår test-title";
         Product product = new Product(title,34.0,"","","");
-        given(repository.findByTitle("vår test-title")).willReturn(Optional.of(product));
+        // simulerar att en produkt redan finns i databasen med mock och returnerar en optional med den titeln
+        given(repository.findByTitle(title)).willReturn(Optional.of(product));
 
         // then
         BadRequestException exception = assertThrows(BadRequestException.class,
                 // when
                 () -> underTest.addProduct(product));
         verify(repository, times(1)).findByTitle(title);
-        verify(repository, never()).save(any());
-        assertEquals("En produkt med titeln: vår test-title finns redan", exception.getMessage());
+        verify(repository, never()).save(any()); // verifierar att produkten Inte sparas
+        assertEquals("En produkt med titeln: " + title + " finns redan", exception.getMessage());
     }
+
 
     // updateProduct() -----------------------------------------------------------------------------------------------
 
 
+    // Testar om updateProduct() uppdaterar rätt produkt med findByID()
+    // Fick ändra metoden för att få testet rätt då den inte sparade updatedProdukt
     @Test
     void whenUpdateProductWithFindById_thenUpdateProductById() {
 
@@ -158,47 +165,34 @@ class ProductServiceTest {
                 "urlTillBild"
         );
         product.setId(id);
-        System.out.println(product);
 
-        /*
-        Product updateProduct = new Product();
-        updateProduct.setTitle("Halsband");
-        updateProduct.setPrice(4000.0);
-        updateProduct.setCategory("Smycken");
-        updateProduct.setDescription("fint o ha");
-        updateProduct.setImage("nyUrlTillBild");
-         */
-
-        Product updateProduct = new Product(
+        Product updatedProduct = new Product(
                 "Halsband",
                 4000.0,
                 "Smycken",
                 "fint o ha",
                 "nyUrlTillBild"
         );
-        // updateProduct.setId(id);
-
-        System.out.println(updateProduct);
 
         // when
-        when(repository.findById(id)).thenReturn(Optional.of(updateProduct));
-        when(repository.save(updateProduct)).thenReturn(updateProduct);
+        // Simulerar att den ursprungliga produkten hämtas från databasen med mock
+        when(repository.findById(id)).thenReturn(Optional.of(product));
 
-        Product result = underTest.updateProduct(updateProduct, id);
+        // Kallar på metoden som ska testas för att uppdatera produkten med id
+        underTest.updateProduct(updatedProduct, id);
 
         // then
+        // verifierar att save() funkar med rätt produkt
         verify(repository).save(productCaptor.capture());
-        assertAll(
-                () -> assertEquals("Halsband", result.getTitle()),
-                () -> assertEquals(4000.0, result.getPrice()),
-                () -> assertEquals("Smycken", result.getCategory()),
-                () -> assertEquals("fint o ha", result.getDescription()),
-                () -> assertEquals("nyUrlTillBild", result.getImage())
-        );
+        // och att findById() med rätt id
+        verify(repository, times(1)).findById(id);
+
+        // Kontrollerar att uppdaterad och sparad produkt matchar varandra
+        assertEquals(updatedProduct, productCaptor.getValue());
     }
 
     @Test
-    void whenUpdateProductWithFindById_thenUpdateProductByIdAndThrowException() {
+    void whenTryingTOUpdateNonExitingProductWithUpdateProductAndFindById_thenThrowException() {
 
         //given
         Integer id = 1;
@@ -212,13 +206,17 @@ class ProductServiceTest {
         product.setId(id);
 
         // when
+        // Simulerar att den ursprungliga produkten inte finns i databasen med mock
+        when(repository.findById(id)).thenReturn(Optional.empty());
+
+        // metoden som testas när man försöker uppdatera en produkt som inte finns
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, ()-> {
             underTest.updateProduct(product,id);
         });
 
+        // then
+        // kontrollerar att felmeddelandet matchar det förväntade
         assertEquals("Produkt med id " + id + " hittades inte", exception.getMessage());
-
-
     }
 
     // deleteProduct() -------------------------------------------------------------------------------------------
@@ -271,45 +269,5 @@ class ProductServiceTest {
     }
 
      */
-
-
-
-/*
-    @Test
-    void getAllProducts() {
-        // klar
-    }
-
-    @Test
-    void getAllCategories() {
-        // klar
-    }
-
-    @Test
-    void getProductsByCategory() {
-        // klar
-    }
-
-    @Test
-    void getProductById() {
-        // klar
-    }
-
-    @Test
-    void addProduct() {
-        // klar
-    }
-
-    @Test
-    void updateProduct() {
-        // klar
-    }
-
-    @Test
-    void deleteProduct() {
-        // klar
-    }
-
- */
 
 }
